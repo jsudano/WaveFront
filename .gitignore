@@ -1,0 +1,3 @@
+# Ignore nodejs osc library which installed here
+./nodejs/node_modules
+
