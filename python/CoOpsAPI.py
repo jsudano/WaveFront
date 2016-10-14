@@ -38,7 +38,7 @@ class CoOpsAPI:
         elif (self.currentStatus == -1):
             print("An error occurred during connection, see console for details")
         else:
-            eString = "Error Code: {0}".format(self.currentStatus)
+            eString = "Error Code {0}: ".format(self.currentStatus)
             print(eString + self.data.reason)  # Response.reason returns reason for error status
             return False
 

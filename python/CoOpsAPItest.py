@@ -1,25 +1,23 @@
 """ API Tester """
-
-import CoOpsAPI.py
-
+from CoOpsAPI import *
 # TEST FUNCTIONS BELOW #
 
 # Tests bad inputs
 def testErrorHandling():
     print("Expected: 401 Error")
-    a = CoOpsAPI("https://api.openweathermap.org/data/2.5/weather?q=London")
-    a.checkStatus
-    print("")
+    a = CoOpsAPI("http://api.openweathermap.org/data/2.5/weather?q=London")
+    a.checkStatus()
+    print("-----")
 
     print("Expected: Ambiguous Error")
     b = CoOpsAPI("a")
-    a.checkStatus
-    print("")
+    b.checkStatus()
+    print("-----")
 
     print("Expected: Connection Failure")
     c = CoOpsAPI("http://a.com")
-    c.checkStatus
-    print("")
+    c.checkStatus()
+    print("-----")
 
 
 
