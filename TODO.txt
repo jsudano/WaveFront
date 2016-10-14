@@ -1,5 +1,0 @@
-current todo
-- install pip
-- use pip to get requests
-- see if current class file will run
-- keep working on apis
