@@ -16,18 +16,16 @@ API_URL = "http://api.openweathermap.org/data/2.5/forecast/city?id="
 # Key linked to my personal account for openweathermap.org. Must be last string appended to request url
 API_KEY = "&APPID=1c45f1223de502c389919db8eee5774e"
 
-class CoOpsAPI:
-
-    def __init__(self, URL):
-        self.URL = URL  # Locks the supplied URL to the given class. Separate URLs need separate class instances
+class owmAPI:
+    def __init__(self, locID):
+        self.locID = locID  # Locks the supplied location ID to the given class. Separate URLs need separate class instances
         self.refresh()
 
-    # Requests data from source URL, sets it as various instance variables
+    # Requests data from source URL and location ID, sets it as various instance variables
     def refresh(self):
         try:
-            self.data = requests.get(self.URL)  # sets data variable to the requests Response object, returned by requests.get
-            self.dataString = str(self.data.text)
-            self.dataArray = self.dataString.split(",")  # Splits string into array of data points
+            self.data = requests.get(API_URL + self.locID + API_KEY)  # sets data variable to the requests Response object, returned by requests.get
+            self.json = self.data.json() # Thank god requests has a built in JSON decoder. Returns a dict
             self.currentStatus = self.data.status_code
             return
         except requests.ConnectionError:
@@ -54,4 +52,7 @@ class CoOpsAPI:
             print(eString + self.data.reason)  # Response.reason returns reason for error status
             return False
 
+    # Returns the requested data point
+    def fetch(self, key):
+        return self.json[key]
 
