@@ -28,7 +28,7 @@ class CoOpsAPI:
             print("Ambiguous connection error. Please review input URL")
         except requests.Timeout:
             print("Request timed out")
-        self.currentStatus = -1  # Sets currentStatus so checkStatus can report 
+        self.currentStatus = -1  # Sets currentStatus so checkStatus can report a connection failure
 
 
     # Returns True if currentStatus contains status code 200, otherwise prints error codes and returns False
