@@ -11,7 +11,7 @@ I plan on using multiple APIs. However, I'm in a rush to finish now, so this wil
 import requests
 
 # Base API URL used to call with city ID (the most accurate means)
-API_URL = "http://api.openweathermap.org/data/2.5/forecast/city?id="
+API_URL = "http://api.openweathermap.org/data/2.5/weather?id="
 
 # Key linked to my personal account for openweathermap.org. Must be last string appended to request url
 API_KEY = "&APPID=1c45f1223de502c389919db8eee5774e"

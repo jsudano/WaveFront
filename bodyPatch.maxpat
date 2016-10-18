@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 42.0, 85.0, 1446.0, 929.0 ],
+		"rect" : [ 34.0, 77.0, 1298.0, 627.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -42,13 +42,12 @@
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-8",
-					"linecount" : 2,
 					"maxclass" : "o.display",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 55.0, 69.0, 481.0, 48.0 ],
-					"text" : "/frequency : 440.,\n/envelope/line : [1., 20., 0., 1000.]",
+					"patching_rect" : [ 55.0, 69.0, 481.0, 34.0 ],
+					"text" : "/melody : \"[1, 4, 7, 6, 8, 0, 0, 5, 0, 7]\"",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
 
@@ -170,7 +169,7 @@
 							"modernui" : 1
 						}
 ,
-						"rect" : [ 0.0, 26.0, 1446.0, 903.0 ],
+						"rect" : [ 0.0, 26.0, 1298.0, 601.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -270,7 +269,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 1008.0, 185.0, 150.0, 48.0 ],
+									"patching_rect" : [ 1008.0, 185.0, 150.0, 34.0 ],
 									"style" : "",
 									"text" : "Planned additions:\n-Simple filters\n"
 								}
@@ -365,13 +364,11 @@
 									"fontface" : 0,
 									"fontsize" : 12.0,
 									"id" : "obj-38",
-									"linecount" : 10,
 									"maxclass" : "o.display",
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 1016.0, 422.0, 748.0, 156.0 ],
-									"text" : "/fund : 280.2,\n/num/freqs : 19,\n/spread : 5.37,\n/wf : 1,\n/trem : 0,\n/trem/width : 238.,\n/filter,\n/nums : [1., 6.37, 11.74, 17.11],\n/hz : 0,\n/amp : [0.947368, 0.664737, 0.382105, 0.0994737]",
+									"patching_rect" : [ 1016.0, 422.0, 748.0, 34.0 ],
 									"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 								}
 
