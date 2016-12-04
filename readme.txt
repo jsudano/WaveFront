@@ -1,3 +1,21 @@
+THIS IS A WORK-IN-PROGRESS BUILD. I MAKE NO GUARANTEES IT WILL WORK. IF YOU WANT A DEMO, CHECK OUT THE MASTER BRANCH. 
+
+Currently in progress:
+	- Graphical interface for location selection
+
+Planned features:
+	- Redesigned API handler, possibly using a new API, or multiple API
+	- Redesigned synthesizer system
+
+
+Technical Questions:
+	- How do I install a package locally so I don't need to tell users to install it with pip?
+
+
+(Below you will find the default readme)
+--------------------------------------------------------------------------------------------------
+
+
 Requirements:
 	- Python 2.7
 	- Max MSP
