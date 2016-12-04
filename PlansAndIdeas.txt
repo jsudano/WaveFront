@@ -1,0 +1,93 @@
+API/Interaction
+
+General Idea:
+	1. Have a window displaying a rectangular map of the earth. When mousing over the window, have the cursor be a rectangle so that, when the user double-clicks, it outputs the coordinates of the 4 endpoints. 
+	2. Use these coordinates to pull from API. Try to get ALL nodes within the selected coordinates. 
+	3. Pull the selected data from the API message, mine it, treat it, and send to Max
+
+Specifics:
+	1. User selection:
+		- Use python graphics library to display stuff
+		- How do I estimate coordinates from a square map?
+			- Is there a set of equations I can use? Has someone already created an interace for this? Stackoverflow can help????
+		- Needs some simple text instructions, then more simple text telling user what's happening once they've selected ("Fetching data", "Preparing data", etc)
+		- Possible errors:
+			- User has selected a location with too few nodes (like the ocean)
+
+	2. Using the coordinates
+		- OWM API has a rectangle request thing, but I doubt it returns all nodes within the rectangle. Investigate this
+		- If I need to do it on my own, here's what to do:
+			- Take XML/JSON data of all existing nodes and scan it for nodes within the coordinate range
+
+	3. Pull the selected data
+		- This is the easy part, which is already mostly covered in version 1
+		- I should try to make it a little prettier by having specific functions that get specific data, so that my main function is nice and simple
+
+------------
+
+Sound
+
+4 Synthesizers, each linked to a specific aspect:
+	- Wind:
+		Wind will currently function as lead, so we want a mid-high range, 1-2 voice, rhytmically interesting sound.
+
+		- Frequency data:
+			Windspeed: generate an array of all windspeeds in the selected area. Data treatment: scale windspeed to fit into good freq. range, then add to a minimum frequency. We don't want it too bass-y
+		
+		- Rhythmic data:
+			Wind heading: use last digit of each heading to denote pitch duration. May need to add 1 to result so we don't have durations of 0
+
+		- Timbral data:
+
+		- Filter data:
+
+		- Delay data: 
+
+	- Precipitation:
+		- Frequency data:
+			
+		- Rhythmic data:
+
+		- Timbral data:
+
+		- Filter data:
+
+		- Delay data: 
+
+	- Humidity:
+		- Frequency data:
+			
+		- Rhythmic data:
+
+		- Timbral data:
+
+		- Filter data:
+
+		- Delay data:  
+
+	- Temperature:
+		- Frequency data:
+			
+		- Rhythmic data:
+
+		- Timbral data:
+
+		- Filter data:
+
+		- Delay data: 
+
+
+--------------------
+
+Questions:
+	- How do I choose which synth is "lead"?
+		For now, call wind the lead. If I have time, create a dynamic "lead" selector.
+		Idea for a dynamic lead selector:
+			- Try to make all data uniform, then have 4 different data treatment functions for lead, harmony1, harmony2, bass
+
+	- How do I make sure the API always provides the data, even if it's just null?
+		- Treat the data received or find a new API
+
+	- How do I verify that I'm generating something more dynamic than just bell-tones?
+		- Get more data from a specific area
+		- Implement a little randomness
