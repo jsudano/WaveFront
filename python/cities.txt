@@ -1,2 +1,16 @@
-UC Berkeley: 5327684
-
+UC Berkeley: 	5327684
+Glasgow: 		2648579
+Dakar: 			2253354
+San Luis Obispo:5392323
+Beijing:		1816670
+New York: 		5128581
+San Nicolas:	6693229
+Antarctica:		6255152
+Stockholm:		2673730
+Auckland:		2193733
+Moscow:			524901
+Kyoto:			1857910
+Panama:			3703443
+Riga, Latvia:	456172
+Johannesburg:	993800
+Bangkok:		1609350
