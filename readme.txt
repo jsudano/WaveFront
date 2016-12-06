@@ -12,6 +12,15 @@ Technical Questions:
 	- How do I install a package locally so I don't need to tell users to install it with pip?
 
 
+Current used packages:
+	downloaded:
+		requests
+		pillow
+	Included in python 2.7:
+		ctypes
+		Tkinter
+
+
 (Below you will find the default readme)
 --------------------------------------------------------------------------------------------------
 
