@@ -2,6 +2,8 @@
 import Tkinter as tk
 import ctypes
 from PIL import Image, ImageTk
+import owmAPI as owm 
+from math import *
 
 class Interface():
 	def __init__(self):
@@ -32,37 +34,83 @@ class Interface():
 		self.IMAGE_WIDTH = image.size[0]
 		self.IMAGE_HEIGHT = image.size[1] 
 
-		# Attach the image to a canvas so it doesn't get GC'd
-		# Also, need a canvas to register mousey clicks
-		self.canvas = tk.Canvas(root, background = 'white', 
-							width = self.IMAGE_WIDTH, 
-							height = self.IMAGE_HEIGHT)
-		canvas = self.canvas
-		canvas.create_image((0,0), anchor = 'nw', image = photo) # keep a reference!
-
 		# Configure text
 		self.prev_var = tk.StringVar(value='-:-')
-		labels = tk.Frame(root)
-		labels.pack()
-		tk.Label(labels, text='Last Point Clicked: ').pack(side=tk.LEFT)
+		self.status_var = tk.StringVar(value = 'Select an area on the map to hear its weather')
+		frameHeight = self.WINDOW_HEIGHT - self.IMAGE_HEIGHT
+		labels = tk.Frame(root, cursor = 'arrow', height = frameHeight,
+						width = self.WINDOW_WIDTH)
+		labels.pack(side = 'bottom')
+		tk.Label(labels, text='Selected Coordinates: ').pack(side='left')
 		prev = tk.Label(labels, textvariable=self.prev_var)
-		prev.pack(side=tk.LEFT)
+		prev.pack(side='left')
+		tk.Label(labels, text = 'Status:').pack(side = 'left')
+		status = tk.Label(labels, textvariable = self.status_var)
+		status.pack(side='left')
+
+
+		# Attach the image to a canvas so it doesn't get GC'd
+		# Also, need a canvas to register mousey clicks
+		self.imageCanvas = tk.Canvas(root, background = 'white', 
+							width = self.IMAGE_WIDTH, 
+							height = self.IMAGE_HEIGHT)
+		imageCanvas = self.imageCanvas
+		imageCanvas.create_image((0,0), anchor = 'nw', image = photo) # keep a reference!
+
+		
 
 		# Set canvas to check for left-click and record coordinates
-		self.canvas.bind('<Button-1>', self.on_click)
+		imageCanvas.bind('<Button-1>', self.OnClick)
 
-		root.config(cursor="dotbox")
+		root.config(cursor="arrow")
 
-		canvas.pack() #add image to root 
+		imageCanvas.pack() #add image to root 
 		root.mainloop()
 
 	# Handler function for left-click
-	def on_click(self, event):
+	def OnClick(self, event):
 		last_point = event.x, event.y
-		self.prev_var.set('%s:%s' % last_point)
-		self.calcCoords(last_point)
+		coords = self.CalcCoords(last_point)
+		self.prev_var.set('{0} : {1}'.format(coords[0], coords[1]))
+		
+		json = self.FetchWeather(coords)
+		self.status_var.set("onto music")
 
-	def calcCoords(self, point):
-		a = 0
+
+	# Calculates coordinates from an input tuple of X, Y pixels
+	def CalcCoords(self, point):
+		self.status_var.set('Calculating Coordinates')
+		x = point[0]
+		y = point[1]
+
+		dispPM = x - 640.5 # These are the pixel locations relative to EQ and PM
+		dispEQ = 322.5 - y
+
+		longitude = dispPM * (360 / 1280.0)
+		latitude = dispEQ * (180 / 644.0)
+		# Return a tuple (longitude, latitude)
+		point1 = (latitude, longitude)
+		return point1
+
+
+	# Fetches data from API (may need to parse it here too)
+	def FetchWeather(self, point):
+		self.status_var.set('Fetching weather data from 50 nearest nodes')
+		try:
+			node = owm.owmAPI(point)
+		except TypeError:
+			print("Input of values to API failed, check type")
+			self.status_var.set("An error occurred during data fetch." + 
+								" See console for details")
+			return
+
+		json = node.Fetch()
+		if (json == -1):
+			self.status_var.set("An error occurred during data fetch." + 
+								" See console for details")
+			return -1
+		print(node.Fetch())
+
+
 
 intf = Interface()
