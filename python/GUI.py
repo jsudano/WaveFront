@@ -37,8 +37,7 @@ class Interface():
 		# Configure text
 		self.prev_var = tk.StringVar(value='-:-')
 		self.status_var = tk.StringVar(value = 'Select an area on the map to hear its weather')
-		frameHeight = self.WINDOW_HEIGHT - self.IMAGE_HEIGHT
-		labels = tk.Frame(root, cursor = 'arrow', height = frameHeight,
+		labels = tk.Frame(root, cursor = 'dotbox', height = self.WINDOW_HEIGHT,
 						width = self.WINDOW_WIDTH)
 		labels.pack(side = 'bottom')
 		tk.Label(labels, text='Selected Coordinates: ').pack(side='left')
@@ -69,12 +68,12 @@ class Interface():
 
 	# Handler function for left-click
 	def OnClick(self, event):
-		last_point = event.x, event.y
+		last_point = (event.x, event.y)
 		coords = self.CalcCoords(last_point)
-		self.prev_var.set('{0} : {1}'.format(coords[0], coords[1]))
 		
 		json = self.FetchWeather(coords)
-		self.status_var.set("onto music")
+		
+		# Data parsing time
 
 
 	# Calculates coordinates from an input tuple of X, Y pixels
@@ -88,14 +87,17 @@ class Interface():
 
 		longitude = dispPM * (360 / 1280.0)
 		latitude = dispEQ * (180 / 644.0)
-		# Return a tuple (longitude, latitude)
-		point1 = (latitude, longitude)
-		return point1
+		self.prev_var.set('{0} : {1}'.format(latitude, longitude))
+
+		# Return a tuple (latitude, longitude)
+		return (latitude, longitude)
 
 
 	# Fetches data from API (may need to parse it here too)
 	def FetchWeather(self, point):
 		self.status_var.set('Fetching weather data from 50 nearest nodes')
+		self.root.update_idletasks() # Force update of text variables in root
+
 		try:
 			node = owm.owmAPI(point)
 		except TypeError:
@@ -109,7 +111,11 @@ class Interface():
 			self.status_var.set("An error occurred during data fetch." + 
 								" See console for details")
 			return -1
-		print(node.Fetch())
+		elif (json == -2):
+			self.status_var.set("Insufficient data for selected coordinates." +
+								" Try an area nearer to civilization")
+		elif(isinstance(json, dict)):
+			self.status_var.set("Data Success!")
 
 
 

@@ -14,8 +14,16 @@ def testSimpleSuccess():
     str(x.Fetch())
     print(x.Fetch()['list'])
 
+def testFloatLength():
+    x = owmAPI((55.5, 37.5))
+    if x.Fetch():
+        print("SUCCESS")
+    else:
+        print("FAILURE")
+
 
 # TEST CALLS #
 
-testErrorHandling()
-testSimpleSuccess()
+#testErrorHandling()
+#testSimpleSuccess()
+testFloatLength()

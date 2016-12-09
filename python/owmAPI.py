@@ -24,11 +24,10 @@ class owmAPI:
     def refresh(self):
         try:
             # sets data variable to the requests Response object, returned by requests.get
-            self.data = requests.get(API_URL + 
-                                    "lat=" + str(self.coords[0]) +
-                                    "&lon=" + str(self.coords[1]) +
-                                    CNT_URL + 
-                                    API_KEY) 
+            req = (API_URL + "lat=" + str(self.coords[0]) + 
+                "&lon=" + str(self.coords[1]) + CNT_URL + API_KEY)
+            print(req)
+            self.data = requests.get(req) 
             self.json = self.data.json() # Thank god requests has a built in JSON decoder. Returns a dict
             self.currentStatus = self.data.status_code
             return
@@ -42,23 +41,33 @@ class owmAPI:
             print("Ambiguous connection error. Please review input URL")
         except requests.Timeout:
             print("Request timed out")
+        except ValueError:
+            self.currentStatus = -2
+            return
         self.currentStatus = -1  # Sets currentStatus so checkStatus can report 
 
 
     # Returns True if currentStatus contains status code 200, otherwise prints error codes and returns False
     def checkStatus(self):
         if (self.currentStatus == 200):
-            return True
+            return 1
         elif (self.currentStatus == -1):
             print("An error occurred during connection, see console for details")
+            return -1
+        elif (self.currentStatus == -2):
+            print("An error occurred during connection, see console for details")
+            return -2
         else:
             eString = "Error Code {0}: ".format(self.currentStatus)
             print(eString + self.data.reason)  # Response.reason returns reason for error status
-            return False
+            return 0
 
     # Returns the requested data as a json dict, or -1 if request failed
     def Fetch(self):
-        if(self.checkStatus):
+        if(self.currentStatus > 0):
             return self.json
-        return -1
+        elif (self.currentStatus == -1):
+            return -1
+        elif (self.currentStatus == -2):
+            return -2
 
