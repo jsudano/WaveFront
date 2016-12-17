@@ -2,21 +2,13 @@
 import Tkinter as tk
 import ctypes
 from PIL import Image, ImageTk
-import owmAPI as owm 
-from math import *
+from utils import *
+import sendWeather as sw
 
 class Interface():
 	def __init__(self):
 		self.getScreenSize()
 		self.initialize()
-
-	def getScreenSize(self):
-		# Get monitor size
-		user32 = ctypes.windll.user32
-		self.SCR_WIDTH = user32.GetSystemMetrics(0) 
-		self.SCR_HEIGHT = user32.GetSystemMetrics(1)
-		self.WINDOW_WIDTH = int(self.SCR_WIDTH / 1.5)
-		self.WINDOW_HEIGHT = int(self.SCR_HEIGHT / 1.5)
 
 	def initialize(self):
 		# Declare root window, set size
@@ -36,7 +28,7 @@ class Interface():
 
 		# Configure text
 		self.prev_var = tk.StringVar(value='-:-')
-		self.status_var = tk.StringVar(value = 'Select an area on the map to hear its weather')
+		self.status_var = tk.StringVar(value = 'Click a spot on the map to hear its weather')
 		labels = tk.Frame(root, cursor = 'dotbox', height = self.WINDOW_HEIGHT,
 						width = self.WINDOW_WIDTH)
 		labels.pack(side = 'bottom')
@@ -56,8 +48,6 @@ class Interface():
 		imageCanvas = self.imageCanvas
 		imageCanvas.create_image((0,0), anchor = 'nw', image = photo) # keep a reference!
 
-		
-
 		# Set canvas to check for left-click and record coordinates
 		imageCanvas.bind('<Button-1>', self.OnClick)
 
@@ -69,54 +59,26 @@ class Interface():
 	# Handler function for left-click
 	def OnClick(self, event):
 		last_point = (event.x, event.y)
-		coords = self.CalcCoords(last_point)
+		coords = CalcCoords(last_point, self)
 		
-		json = self.FetchWeather(coords)
-		
-		# Data parsing time
-
-
-	# Calculates coordinates from an input tuple of X, Y pixels
-	def CalcCoords(self, point):
-		self.status_var.set('Calculating Coordinates')
-		x = point[0]
-		y = point[1]
-
-		dispPM = x - 640.5 # These are the pixel locations relative to EQ and PM
-		dispEQ = 322.5 - y
-
-		longitude = dispPM * (360 / 1280.0)
-		latitude = dispEQ * (180 / 644.0)
-		self.prev_var.set('{0} : {1}'.format(latitude, longitude))
-
-		# Return a tuple (latitude, longitude)
-		return (latitude, longitude)
-
-
-	# Fetches data from API (may need to parse it here too)
-	def FetchWeather(self, point):
-		self.status_var.set('Fetching weather data from 50 nearest nodes')
-		self.root.update_idletasks() # Force update of text variables in root
-
-		try:
-			node = owm.owmAPI(point)
-		except TypeError:
-			print("Input of values to API failed, check type")
-			self.status_var.set("An error occurred during data fetch." + 
-								" See console for details")
+		json = FetchWeather(coords, self)
+		if(isinstance(json, int)):
 			return
+		dic = mineJson(json)
+		freqs = genFreqs(dic)
 
-		json = node.Fetch()
-		if (json == -1):
-			self.status_var.set("An error occurred during data fetch." + 
-								" See console for details")
-			return -1
-		elif (json == -2):
-			self.status_var.set("Insufficient data for selected coordinates." +
-								" Try an area nearer to civilization")
-		elif(isinstance(json, dict)):
-			self.status_var.set("Data Success!")
+		self.status_var.set('Now playing!')
+		self.send = sw.SendWeather(freqs)
 
 
+	def getScreenSize(self):
+		# Get monitor size
+		user32 = ctypes.windll.user32
+		self.SCR_WIDTH = user32.GetSystemMetrics(0) 
+		self.SCR_HEIGHT = user32.GetSystemMetrics(1)
+		self.WINDOW_WIDTH = int(self.SCR_WIDTH / 1.5)
+		self.WINDOW_HEIGHT = int(self.SCR_HEIGHT / 1.5)
 
-intf = Interface()
+
+
+Interface()

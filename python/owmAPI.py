@@ -1,8 +1,6 @@
-"""Small class designed to handle the OpenWeatherMap.org API (Published at http://api.openweathermap.org/api/).
-CO-OPS provides data from weather buoys accross the world. As far as I can tell, refresh rate is 6 minutes
-
+"""Small class designed to handle the OpenWeatherMap.org API 
+(Published at http://api.openweathermap.org/api/). 
 """
-
 import requests
 
 # Base API URL used to call with city ID (the most accurate means)
@@ -26,7 +24,6 @@ class owmAPI:
             # sets data variable to the requests Response object, returned by requests.get
             req = (API_URL + "lat=" + str(self.coords[0]) + 
                 "&lon=" + str(self.coords[1]) + CNT_URL + API_KEY)
-            print(req)
             self.data = requests.get(req) 
             self.json = self.data.json() # Thank god requests has a built in JSON decoder. Returns a dict
             self.currentStatus = self.data.status_code
